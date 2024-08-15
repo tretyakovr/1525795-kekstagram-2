@@ -135,7 +135,7 @@ function getRandomNickName () {
 const commentId = getGeneratedId();
 const createComment = () => ({
   id: commentId(),
-  avatar: 'img/avatar-' + String(getRandomInteger(1, 6)) + '.svg',
+  avatar: `img/avatar-${String(getRandomInteger(1, 6))}.svg`,
   message: getCommentsList().join(' '),
   name: getRandomNickName(),
 });
@@ -146,7 +146,7 @@ const photoNum = getUniqueRandomInteger(1, 25);
 
 const createPhoto = () => ({
   id: photoId(),
-  url: 'photos/' + String(photoNum()) + '.jpg',
+  url: `photos/${String(photoNum())}.jpg`,
   description: getRandomDescription(),
   likes: getRandomInteger(15, 200),
   comments: Array.from({length: getRandomInteger(0, 30)}, createComment),
@@ -154,4 +154,5 @@ const createPhoto = () => ({
 
 const photoList = Array.from({length: 25}, createPhoto);
 
+// eslint-disable-next-line no-console
 console.log(photoList);
