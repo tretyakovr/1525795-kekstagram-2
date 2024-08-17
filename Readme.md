@@ -1,7 +1,7 @@
 # Личный проект «Кекстаграм»
 
 * Студент: [Роман Третьяков](https://up.htmlacademy.ru/javascript-individual/2/user/1525795).
-* Наставник: [Олег Глущенко](https://htmlacademy.ru/profile/id305355).
+* Наставник: Олег Глущенко.
 
 ---
 
