@@ -2,7 +2,7 @@
 const MESSAGES = [
   'Всё отлично!',
   'В целом всё неплохо. Но не всё.',
-  'Очень интересно! Но ничего не понятно...',
+  'Ничего не понятно, но очень интересно!',
   'Моя бабушка случайно чихнула с фотоаппаратом в руках и у неё получилась фотография лучше.',
   'Я поскользнулся на банановой кожуре и уронил фотоаппарат на кота и у меня получилась фотография лучше.',
   'Лица у людей на фотке перекошены, как будто их избивают. Как можно было поймать такой неудачный момент?!',
@@ -66,7 +66,7 @@ const DESCRIPTIONS = [
 ];
 
 // Функция-генератор id
-function getGeneratedId () {
+function getGeneratedId() {
   let lastId = 0;
 
   return function () {
@@ -76,7 +76,7 @@ function getGeneratedId () {
 }
 
 // Функция возвращает случайное число в заданном диапазоне
-function getRandomInteger (min, max) {
+function getRandomInteger(min, max) {
   const lower = Math.ceil(Math.min(Math.abs(min), Math.abs(max)));
   const upper = Math.floor(Math.max(Math.abs(min), Math.abs(max)));
   const result = Math.random() * (upper - lower + 1) + lower;
@@ -85,7 +85,7 @@ function getRandomInteger (min, max) {
 }
 
 // Функция возвращает уникальное случайное число в заданном диапазоне
-function getUniqueRandomInteger (min, max) {
+function getUniqueRandomInteger(min, max) {
   const values = [];
 
   return function () {
@@ -104,13 +104,13 @@ function getUniqueRandomInteger (min, max) {
 }
 
 // Функция возвращает случайный элемент из списка
-function getRandomListElement (list) {
+function getRandomListElement(list) {
   return list[getRandomInteger(0, list.length - 1)];
 }
 
 // Комментарии
 // Функция возвращает случайное предложение из списка
-function getRandomComment () {
+function getRandomComment() {
   return getRandomListElement(MESSAGES);
 }
 
@@ -118,16 +118,16 @@ function getRandomComment () {
 function getCommentsList() {
   // По ТЗ в комментарии количество предложений - 1 или 2
   const messageCount = getRandomInteger(1, 2);
-  return Array.from({length: messageCount}, getRandomComment);
+  return Array.from({ length: messageCount }, getRandomComment);
 }
 
 // Функция возвращает случайное описание фотографии из списка
-function getRandomDescription () {
+function getRandomDescription() {
   return getRandomListElement(DESCRIPTIONS);
 }
 
 // Функция возвращает случайный никнейм
-function getRandomNickName () {
+function getRandomNickName() {
   return getRandomListElement(NICKNAMES);
 }
 
@@ -149,10 +149,10 @@ const createPhoto = () => ({
   url: `photos/${String(photoNum())}.jpg`,
   description: getRandomDescription(),
   likes: getRandomInteger(15, 200),
-  comments: Array.from({length: getRandomInteger(0, 30)}, createComment),
+  comments: Array.from({ length: getRandomInteger(0, 30) }, createComment),
 });
 
-const photoList = Array.from({length: 25}, createPhoto);
+const photoList = Array.from({ length: 25 }, createPhoto);
 
 // eslint-disable-next-line no-console
 console.log(photoList);
