@@ -38,6 +38,4 @@ const getPhoto = () => ({
   }, getComments),
 });
 
-export function getPhotos() {
-  return Array.from({ length: PHOTOS_COUNT }, getPhoto);
-}
+export const photosList = Array.from({ length: PHOTOS_COUNT }, getPhoto);
