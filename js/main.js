@@ -1,12 +1,12 @@
-import { getPhotos } from './get-photos';
+import { photosList } from './get-photos';
 
 const pictureTemplate = document.querySelector('#picture').content.querySelector('a');
 
-const photosList = getPhotos();
 const documentFragment = document.createDocumentFragment();
 
 photosList.forEach((photo) => {
   const photoItem = pictureTemplate.cloneNode(true);
+  photoItem.setAttribute('data-id', photo.id);
 
   photoItem.querySelector('img').setAttribute('src', photo.url);
   photoItem.querySelector('img').setAttribute('alt', photo.description);
