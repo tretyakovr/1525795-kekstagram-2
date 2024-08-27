@@ -21,5 +21,6 @@ function countItems(arr, item) {
 }
 
 export function isDuplicates(arr) {
-  return !(arr.every((item) => { return countItems(arr, item) === 1 }));
+  // eslint-disable-next-line no-console
+  return !(arr.every((item) => countItems(arr, item) === 1));
 }

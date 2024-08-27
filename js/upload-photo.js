@@ -1,4 +1,4 @@
-import { isDuplicates } from "./utils";
+import { isDuplicates } from './utils';
 
 const uploadForm = document.querySelector('.img-upload__form');
 const uploadInput = document.querySelector('.img-upload__input');
@@ -53,7 +53,8 @@ function validateHashtags() {
     isError = true;
   }
 
-  if (!tags.every(tag => { return hashtag.test(tag); })) {
+  // eslint-disable-next-line no-console
+  if (!tags.every((tag) => hashtag.test(tag))) {
     validateError.textContent = 'Один из хэштегов не соответствует требуемому формату!';
     isError = true;
   }
