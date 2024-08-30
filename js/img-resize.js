@@ -5,7 +5,7 @@ const imgPreview = document.querySelector('.img-upload__preview img');
 let currentSize = 100;
 const sizeStep = 25;
 
-// При закрытии окна preview удалить listeners!!
+// ToDo: При закрытии окна preview удалить listeners!!
 btnSmaller.addEventListener('click', () => {
   currentSize = currentSize === 0 ? 0 : currentSize -= sizeStep;
   changePreview();

@@ -1,7 +1,7 @@
 const imgPreview = document.querySelector('.img-upload__preview img');
 const filters = document.querySelector('.effects__list');
 let currentFilter = 'none';
-const imgFilter = document.querySelector('.img-upload__effect-level');
+const imgEffectLevel = document.querySelector('.img-upload__effect-level');
 const slider = document.querySelector('.effect-level__slider');
 const valueElement = document.querySelector('.effect-level__value');
 const filterSettings = {
@@ -53,15 +53,15 @@ const filterSettings = {
   }
 };
 
+imgEffectLevel.hidden = true;
 
 noUiSlider.create(slider, {
   range: {
-    min: filterSettings['none']['min'],
-    max: filterSettings['none']['max'],
+    min: filterSettings[currentFilter]['min'],
+    max: filterSettings[currentFilter]['max'],
   },
-  start: filterSettings['none']['start'],
-  step: filterSettings['none']['step'],
-  tooltips: true,
+  start: filterSettings[currentFilter]['start'],
+  step: filterSettings[currentFilter]['step'],
   connect: 'lower',
 });
 
@@ -71,9 +71,10 @@ filters.addEventListener('click', (evt) => {
     currentFilter = evt.target.value;
 
     if (currentFilter === 'none') {
-      imgFilter.hidden = true;
+      imgPreview.style = '';
+      imgEffectLevel.hidden = true;
     } else {
-      imgFilter.hidden = false;
+      imgEffectLevel.hidden = false;
 
       slider.noUiSlider.updateOptions({
         range: {
@@ -93,7 +94,5 @@ filters.addEventListener('click', (evt) => {
 
 slider.noUiSlider.on('update', () => {
   valueElement.value = slider.noUiSlider.get();
-  imgPreview.style.filter = `${filterSettings[currentFilter]['function']}
-                             (${valueElement.value}
-                             ${filterSettings[currentFilter]['unit']})`;
+  imgPreview.style.filter = `${filterSettings[currentFilter]['function']}(${valueElement.value}${filterSettings[currentFilter]['unit']})`;
 });
