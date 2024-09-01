@@ -1,13 +1,29 @@
 export function getArrayPages(arr, pageSize = 5) {
+  let arrCopy = arr.slice();
   const result = {};
-  let pageNum = 0;
+  let pageNum = 0; // Используем человекочитаемые номера странниц
 
-  while (arr.length) {
-    result[pageNum] = arr.splice(0, pageSize);
+  // Нарезаем страницы массива
+  while (arrCopy.length) {
     pageNum += 1;
-    console.log(result[pageNum]);
+    result[pageNum] = arrCopy.splice(0, pageSize);
   }
-  console.log(result);
+  // И записываем количество страниц
+  result['length'] = pageNum;
 
   return result;
+}
+
+
+export function getPageCount(pages) {
+  return pages['length'];
+}
+
+
+export function getPageItems(pages, pageNum) {
+  return pages[pageNum];
+}
+
+export function getPageLength(pages, pageNum) {
+  return pages[pageNum] === undefined ? 0 : pages[pageNum].length;
 }
