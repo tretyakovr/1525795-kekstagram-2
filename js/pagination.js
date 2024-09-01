@@ -1,5 +1,5 @@
 export function getArrayPages(arr, pageSize = 5) {
-  let arrCopy = arr.slice();
+  const arrCopy = arr.slice();
   const result = {};
   let pageNum = 0; // Используем человекочитаемые номера странниц
 
