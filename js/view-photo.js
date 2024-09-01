@@ -12,7 +12,7 @@ const commentsDiv = document.querySelector('ul.social__comments');
 let comments;
 let currentPageNum;
 let commentsByPage;
-let shownCommentsCount = 0;
+let shownCommentsCount;
 const commentTemplateAsText = `
   <li class="social__comment">
     <img class="social__picture" src="" alt="" width="35" height="35">
