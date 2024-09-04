@@ -7,6 +7,7 @@ const uploadCancelButton = document.querySelector('.img-upload__cancel');
 const uploadOverlay = document.querySelector('.img-upload__overlay');
 const uploadPreview = document.querySelector('.img-upload__preview img');
 const inputTags = uploadForm.querySelector('.text__hashtags');
+const inputComment = uploadForm.querySelector('.text__description');
 const validateError = document.createElement('p');
 const pristine = new Pristine(uploadForm, {}, false);
 const submitButton = document.querySelector('#upload-submit');
@@ -16,6 +17,8 @@ uploadCancelButton.addEventListener('click', uploadCancelButtonHandler);
 
 
 function uploadInputHandler(evt) {
+  inputTags.value = '';
+  inputComment.value = '';
   uploadOverlay.classList.remove('hidden');
   document.body.classList.add('modal-open');
   uploadPreview.src = URL.createObjectURL(evt.target.files[0]);
@@ -79,6 +82,16 @@ function validateHashtags() {
   return true;
 }
 
+function validateComment() {
+  if (inputComment.value.length > 140) {
+    validateError.textContent = 'Длина комментария не может быть больше 140 символов!';
+    inputComment.parentNode.insertAdjacentElement('beforeend', validateError);
+    inputComment.classList.add('img-upload__field-wrapper--error');
+
+    return false;
+  }
+  return true;
+}
 
 pristine.addValidator(inputTags, validateHashtags);
 
@@ -94,8 +107,10 @@ uploadForm.addEventListener('submit', (evt) => {
   // Очистить результат предыдущей валидации
   inputTags.classList.remove('img-upload__field-wrapper--error');
   validateError.textContent = '';
+  inputComment.classList.remove('img-upload__field-wrapper--error');
+  validateError.textContent = '';
 
-  if (pristine.validate()) {
+  if (pristine.validate() && validateComment()) {
     disableSubmit();
     sendData(new FormData(evt.target));
     uploadCancelButtonHandler();
