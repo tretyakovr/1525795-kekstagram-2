@@ -1,20 +1,24 @@
 import { isDuplicates } from './utils';
+import { sendData } from './exchange';
 
 const uploadForm = document.querySelector('.img-upload__form');
 const uploadInput = document.querySelector('.img-upload__input');
 const uploadCancelButton = document.querySelector('.img-upload__cancel');
 const uploadOverlay = document.querySelector('.img-upload__overlay');
+const uploadPreview = document.querySelector('.img-upload__preview img');
 const inputTags = uploadForm.querySelector('.text__hashtags');
 const validateError = document.createElement('p');
 const pristine = new Pristine(uploadForm, {}, false);
+const submitButton = document.querySelector('#upload-submit');
 
 uploadInput.addEventListener('change', uploadInputHandler);
 uploadCancelButton.addEventListener('click', uploadCancelButtonHandler);
 
 
-function uploadInputHandler() {
+function uploadInputHandler(evt) {
   uploadOverlay.classList.remove('hidden');
   document.body.classList.add('modal-open');
+  uploadPreview.src = URL.createObjectURL(evt.target.files[0]);
   document.addEventListener('keydown', checkEscKey);
 }
 
@@ -47,24 +51,25 @@ function validateHashtags() {
   const tags = inputTags.value.split(' ');
   const hashtag = /^#[a-zа-яё0-9]{1,19}$/i;
   let isError = false;
+  let errText = '';
 
   if (tags.length > 5) {
-    validateError.textContent = 'Не более 5 хэштегов!';
+    errText += 'Не более 5 хэштегов!';
     isError = true;
   }
 
-  // eslint-disable-next-line no-console
   if (!tags.every((tag) => hashtag.test(tag))) {
-    validateError.textContent = 'Один из хэштегов не соответствует требуемому формату!';
+    errText += 'Один из хэштегов не соответствует требуемому формату!';
     isError = true;
   }
 
   if (isDuplicates(tags)) {
-    validateError.textContent = 'Присутствуют дубликаты хэштегов!';
+    errText += 'Присутствуют дубликаты хэштегов!';
     isError = true;
   }
 
   if (isError) {
+    validateError.textContent = errText;
     inputTags.parentNode.insertAdjacentElement('beforeend', validateError);
     inputTags.classList.add('img-upload__field-wrapper--error');
 
@@ -78,6 +83,11 @@ function validateHashtags() {
 pristine.addValidator(inputTags, validateHashtags);
 
 
+const disableSubmit = () => {
+  submitButton.disabled = true;
+};
+
+
 uploadForm.addEventListener('submit', (evt) => {
   evt.preventDefault();
 
@@ -85,5 +95,9 @@ uploadForm.addEventListener('submit', (evt) => {
   inputTags.classList.remove('img-upload__field-wrapper--error');
   validateError.textContent = '';
 
-  pristine.validate();
+  if (pristine.validate()) {
+    disableSubmit();
+    sendData(new FormData(evt.target));
+    uploadCancelButtonHandler();
+  }
 });

@@ -1,2 +1,3 @@
-import './show-photos';
-import './view-photo';
+import { getData } from './exchange';
+
+getData();
