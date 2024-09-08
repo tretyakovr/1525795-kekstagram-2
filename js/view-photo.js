@@ -2,7 +2,7 @@ import { getArrayPages } from './pagination.js';
 import { getPageCount } from './pagination.js';
 import { getPageItems } from './pagination.js';
 import { getPageLength } from './pagination.js';
-import { loadedPhotos } from './exchange.js';
+import { getLoadedPhotos } from './photos-state.js';
 
 const COMMENTS_BY_PAGE = 5;
 const modalView = document.querySelector('.big-picture');
@@ -99,7 +99,7 @@ function photoModalViewHandler(evt) {
 
     // Получаем photo из preview и заполняем свойства полноразмерного изображения
     clearComments();
-    const photoItem = loadedPhotos[evt.target.parentNode.dataset.id];
+    const photoItem = getLoadedPhotos[evt.target.parentNode.dataset.id];
     comments = photoItem.comments;
     commentsByPage = getArrayPages(comments, COMMENTS_BY_PAGE);
 

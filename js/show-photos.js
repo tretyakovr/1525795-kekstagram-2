@@ -1,8 +1,14 @@
+// import { getLoadedPhotos } from './photos-state';
+
 export const showThumbnail = (photos) => {
+  // const photos = getLoadedPhotos();
   const pictureTemplate = document.querySelector('#picture').content.querySelector('a');
   const documentFragment = document.createDocumentFragment();
 
-  photos.forEach((photo) => {
+  console.log('@@@', photos);
+
+
+  photos.foreach((photo) => {
     const photoItem = pictureTemplate.cloneNode(true);
     photoItem.dataset.id = photo.id;
 
