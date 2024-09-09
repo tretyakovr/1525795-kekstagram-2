@@ -59,11 +59,8 @@ export function getUniqueRandomNumbers(min, max, numbersCount = 1) {
 export function getUniqueRandomListElements(list, elementsCount = 1) {
   const listElements = [];
   const randomNumbers = getUniqueRandomNumbers(0, list.length - 1, elementsCount)();
-
   randomNumbers.forEach((item) => listElements.push(list[item]));
-  // let randomInt = getUniqueRandomInteger(0, list.length - 1)();
-  // console.log(randomInt);
-  // console.log(list[randomInt]);
+
   return listElements;
 }
 

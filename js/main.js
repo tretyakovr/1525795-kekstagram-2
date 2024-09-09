@@ -1,10 +1,12 @@
 import { getData } from './exchange';
 import { getDefaultPhotos, getRandomPhotos, getDiscussedPhotos } from './photos-state';
+import { debounce } from './utils';
 
 const sectionFilters = document.querySelector('.img-filters');
 const filterDefault = document.querySelector('#filter-default');
 const filterRandom = document.querySelector('#filter-random');
 const filterDiscussed = document.querySelector('#filter-discussed');
+const RENDERER_DELAY = 1000;
 
 
 sectionFilters.classList.remove('img-filters--inactive');
@@ -12,6 +14,7 @@ filterDefault.addEventListener('click', renderDefaultPhotos);
 filterRandom.addEventListener('click', renderRandomPhotos);
 filterDiscussed.addEventListener('click', renderDiscussedPhotos);
 
+const debounceWrapper = debounce(getData, RENDERER_DELAY);
 
 renderDefaultPhotos();
 
@@ -21,7 +24,7 @@ function renderDefaultPhotos() {
   filterRandom.classList.remove('img-filters__button--active');
   filterDiscussed.classList.remove('img-filters__button--active');
 
-  getData(getDefaultPhotos);
+  debounceWrapper(getDefaultPhotos);
 }
 
 
@@ -30,7 +33,7 @@ function renderRandomPhotos() {
   filterRandom.classList.add('img-filters__button--active');
   filterDiscussed.classList.remove('img-filters__button--active');
 
-  getData(getRandomPhotos);
+  debounceWrapper(getRandomPhotos);
 }
 
 
@@ -39,6 +42,5 @@ function renderDiscussedPhotos() {
   filterRandom.classList.remove('img-filters__button--active');
   filterDiscussed.classList.add('img-filters__button--active');
 
-  getData(getDiscussedPhotos);
+  debounceWrapper(getDiscussedPhotos);
 }
-

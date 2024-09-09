@@ -1,12 +1,13 @@
 import { showErrMessage, showSuccessMessage } from './alerts';
 import { saveLoadedPhotos } from './photos-state';
 import { showThumbnail } from './show-thumbnail';
+
 const GET_ENDPOINT = 'https://31.javascript.htmlacademy.pro/kekstagram/data';
 const POST_ENDPOINT = 'https://31.javascript.htmlacademy.pro/kekstagram';
 const submitButton = document.querySelector('#upload-submit');
 
 
-const getData = (cb) =>
+const getData = (cb) => {
   fetch(GET_ENDPOINT)
     .then((response) => {
       if (!response.ok) {
@@ -17,17 +18,14 @@ const getData = (cb) =>
     .then((data) => {
       saveLoadedPhotos(data);
     })
-    .then(() => {
-      const photos = cb();
-
-      return photos;
-    })
+    .then(() => cb())
     .then((photos) => {
       showThumbnail(photos);
     })
     .catch((err) => {
       showErrMessage(err.message); // Ошибка соединения с сервером!
     });
+};
 
 
 const enableSubmit = () => {
