@@ -5,13 +5,11 @@ const RANDOM_COUNT = 10;
 
 
 export function saveLoadedPhotos(photos) {
-  console.log('saveloadedphotos', photos);
   loadedPhotos = photos;
 }
 
 
 export function getLoadedPhotos() {
-  console.log('getloadedphotos', loadedPhotos);
   return loadedPhotos;
 }
 
@@ -30,4 +28,24 @@ export function getRandomPhotos(countPhotos = RANDOM_COUNT) {
   }
 
   return randomPhotos;
+}
+
+
+export function getDiscussedPhotos() {
+  const sortedPhotos = loadedPhotos.slice().sort(sortByComments);
+
+  return sortedPhotos;
+}
+
+
+function sortByComments(a, b) {
+  {
+    if (a.comments.length > b.comments.length) {
+      return -1;
+    }
+    if (a.comments.length < b.comments.length) {
+      return 1;
+    }
+    return 0;
+  }
 }

@@ -99,7 +99,7 @@ function photoModalViewHandler(evt) {
 
     // Получаем photo из preview и заполняем свойства полноразмерного изображения
     clearComments();
-    const photoItem = getLoadedPhotos[evt.target.parentNode.dataset.id];
+    const photoItem = getLoadedPhotos()[evt.target.parentNode.dataset.id];
     comments = photoItem.comments;
     commentsByPage = getArrayPages(comments, COMMENTS_BY_PAGE);
 
