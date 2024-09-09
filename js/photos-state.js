@@ -16,6 +16,11 @@ export function getLoadedPhotos() {
 }
 
 
+export function getDefaultPhotos() {
+  return loadedPhotos;
+}
+
+
 export function getRandomPhotos(countPhotos = RANDOM_COUNT) {
   const randomIds = getUniqueRandomNumbers(0, loadedPhotos.length - 1, countPhotos)();
   const randomPhotos = [];

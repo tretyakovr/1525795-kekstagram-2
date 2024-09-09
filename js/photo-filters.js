@@ -1,6 +1,5 @@
 import { showThumbnail } from './show-photos';
-import { getDefaultPhotos } from './exchange';
-// import { getLoadedPhotos, getRandomPhotos } from './photos-state';
+import { getDefaultPhotos, getRandomPhotos } from './photos-state';
 const sectionFilters = document.querySelector('.img-filters');
 const filterDefault = document.querySelector('#filter-default');
 const filterRandom = document.querySelector('#filter-random');
@@ -23,7 +22,7 @@ function renderDefaultPhotos() {
   filterRandom.classList.remove('img-filters__button--active');
   filterDiscussed.classList.remove('img-filters__button--active');
 
-  const photos = await getDefaultPhotos();
+  const photos = getDefaultPhotos();
   showThumbnail(photos);
 }
 
@@ -33,7 +32,8 @@ function renderRandomPhotos() {
   filterRandom.classList.add('img-filters__button--active');
   filterDiscussed.classList.remove('img-filters__button--active');
 
-  // showThumbnail(getRandomPhotos());
+  const photos = getRandomPhotos();
+  showThumbnail(photos);
 }
 
 
