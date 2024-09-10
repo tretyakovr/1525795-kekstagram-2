@@ -94,7 +94,7 @@ function photoModalViewHandler(evt) {
     modalView.classList.remove('hidden');
 
     // Добавляем события на закрытие модального окна
-    document.addEventListener('keydown', checkEscKey);
+    document.addEventListener('keydown', closeViewPhotoByEsc);
     closeButton.addEventListener('click', closeModalViewHandler);
 
     // Получаем photo из preview и заполняем свойства полноразмерного изображения
@@ -116,7 +116,7 @@ function photoModalViewHandler(evt) {
 }
 
 
-function checkEscKey(evt) {
+function closeViewPhotoByEsc(evt) {
   if (evt.key === 'Escape') {
     evt.preventDefault();
     closeModalViewHandler();
@@ -127,6 +127,6 @@ function checkEscKey(evt) {
 function closeModalViewHandler() {
   modalView.classList.add('hidden');
   document.body.classList.remove('modal-open');
-  modalView.removeEventListener('keydown', checkEscKey);
+  modalView.removeEventListener('keydown', closeViewPhotoByEsc);
   closeButton.removeEventListener('click', closeModalViewHandler);
 }

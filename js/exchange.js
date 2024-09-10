@@ -28,12 +28,12 @@ const getData = (cb) => {
 };
 
 
-const enableSubmit = () => {
+function enableSubmit () {
   submitButton.disabled = false;
-};
+}
 
 
-const sendData = (formData) =>
+const sendData = (formData, cb) =>
   fetch(POST_ENDPOINT, { method: 'POST', body: formData })
     .then((response) => {
       if (!response.ok) {
@@ -42,6 +42,9 @@ const sendData = (formData) =>
     })
     .then(() => {
       showSuccessMessage();
+    })
+    .then(() => {
+      cb();
     })
     .catch((err) => {
       showErrMessage(err.message); // Ошибка соединения с сервером

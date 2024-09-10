@@ -1,9 +1,9 @@
 const imgPreview = document.querySelector('.img-upload__preview img');
 const filters = document.querySelector('.effects__list');
-let currentFilter = 'none';
 const imgEffectLevel = document.querySelector('.img-upload__effect-level');
 const slider = document.querySelector('.effect-level__slider');
 const valueElement = document.querySelector('.effect-level__value');
+let currentFilter = 'none';
 const FilterSettings = {
   'none': {
     MIN: 0,
@@ -52,9 +52,44 @@ const FilterSettings = {
     UNIT: ''
   }
 };
+const defaultSliderOptions = {
+  range: {
+    min: FilterSettings[currentFilter]['MIN'],
+    max: FilterSettings[currentFilter]['MAX'],
+  },
+  start: FilterSettings[currentFilter]['START'],
+  step: FilterSettings[currentFilter]['STEP'],
+  connect: 'lower',
+};
+
+filters.addEventListener('click', updateFilter);
 
 
-const updateFilter = (evt) => {
+function initSlider() {
+  noUiSlider.create(slider, defaultSliderOptions);
+
+  slider.noUiSlider.on('update', () => {
+    valueElement.value = slider.noUiSlider.get();
+    imgPreview.style.filter = `${FilterSettings[currentFilter]['FUNCTION']}(${valueElement.value}${FilterSettings[currentFilter]['UNIT']})`;
+  });
+}
+
+
+export function resetCurrentFilter() {
+  currentFilter = 'none';
+  imgPreview.style = '';
+  imgEffectLevel.hidden = true;
+
+  resetSlider();
+}
+
+
+function resetSlider() {
+  slider.noUiSlider.updateOptions(defaultSliderOptions);
+}
+
+
+function updateFilter(evt) {
   if (evt.target.nodeName === 'INPUT') {
     currentFilter = evt.target.value;
 
@@ -77,26 +112,8 @@ const updateFilter = (evt) => {
       valueElement.value = FilterSettings[currentFilter]['MAX'];
     }
   }
-};
-
+}
 
 imgEffectLevel.hidden = true;
-
-noUiSlider.create(slider, {
-  range: {
-    min: FilterSettings[currentFilter]['MIN'],
-    max: FilterSettings[currentFilter]['MAX'],
-  },
-  start: FilterSettings[currentFilter]['START'],
-  step: FilterSettings[currentFilter]['STEP'],
-  connect: 'lower',
-});
-
-
-filters.addEventListener('click', updateFilter);
-
-
-slider.noUiSlider.on('update', () => {
-  valueElement.value = slider.noUiSlider.get();
-  imgPreview.style.filter = `${FilterSettings[currentFilter]['FUNCTION']}(${valueElement.value}${FilterSettings[currentFilter]['UNIT']})`;
-});
+initSlider();
+resetCurrentFilter();
