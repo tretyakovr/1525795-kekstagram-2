@@ -2,6 +2,7 @@ const ALERT_SHOW_TIME = 5000;
 const errorTemplate = document.querySelector('#data-error').content;
 const successTemplate = document.querySelector('#success').content;
 
+
 export const showErrMessage = () => {
   const errDiv = document.createElement('div');
   errDiv.appendChild(errorTemplate);
