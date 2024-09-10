@@ -1,72 +1,95 @@
 const imgPreview = document.querySelector('.img-upload__preview img');
 const filters = document.querySelector('.effects__list');
-let currentFilter = 'none';
 const imgEffectLevel = document.querySelector('.img-upload__effect-level');
 const slider = document.querySelector('.effect-level__slider');
 const valueElement = document.querySelector('.effect-level__value');
-const filterSettings = {
+let currentFilter = 'none';
+const FilterSettings = {
   'none': {
-    min: 0,
-    max: 0,
-    step: 0,
-    start: 0
+    MIN: 0,
+    MAX: 0,
+    STEP: 0,
+    START: 0
   },
   'chrome': {
-    min: 0,
-    max: 1,
-    step: 0.1,
-    start: 1,
-    function: 'grayscale',
-    unit: ''
+    MIN: 0,
+    MAX: 1,
+    STEP: 0.1,
+    START: 1,
+    FUNCTION: 'grayscale',
+    UNIT: ''
   },
   'sepia': {
-    min: 0,
-    max: 1,
-    step: 0.1,
-    start: 1,
-    function: 'sepia',
-    unit: ''
+    MIN: 0,
+    MAX: 1,
+    STEP: 0.1,
+    START: 1,
+    FUNCTION: 'sepia',
+    UNIT: ''
   },
   'marvin': {
-    min: 0,
-    max: 100,
-    step: 1,
-    start: 100,
-    function: 'invert',
-    unit: '%'
+    MIN: 0,
+    MAX: 100,
+    STEP: 1,
+    START: 100,
+    FUNCTION: 'invert',
+    UNIT: '%'
   },
   'phobos': {
-    min: 0,
-    max: 3,
-    step: 0.1,
-    start: 3,
-    function: 'blur',
-    unit: 'px'
+    MIN: 0,
+    MAX: 3,
+    STEP: 0.1,
+    START: 3,
+    FUNCTION: 'blur',
+    UNIT: 'px'
   },
   'heat': {
-    min: 1,
-    max: 3,
-    step: 0.1,
-    start: 3,
-    function: 'brightness',
-    unit: ''
+    MIN: 1,
+    MAX: 3,
+    STEP: 0.1,
+    START: 3,
+    FUNCTION: 'brightness',
+    UNIT: ''
   }
 };
-
-imgEffectLevel.hidden = true;
-
-noUiSlider.create(slider, {
+const defaultSliderOptions = {
   range: {
-    min: filterSettings[currentFilter]['min'],
-    max: filterSettings[currentFilter]['max'],
+    min: FilterSettings[currentFilter]['MIN'],
+    max: FilterSettings[currentFilter]['MAX'],
   },
-  start: filterSettings[currentFilter]['start'],
-  step: filterSettings[currentFilter]['step'],
+  start: FilterSettings[currentFilter]['START'],
+  step: FilterSettings[currentFilter]['STEP'],
   connect: 'lower',
-});
+};
+
+filters.addEventListener('click', updateFilter);
 
 
-filters.addEventListener('click', (evt) => {
+function initSlider() {
+  noUiSlider.create(slider, defaultSliderOptions);
+
+  slider.noUiSlider.on('update', () => {
+    valueElement.value = slider.noUiSlider.get();
+    imgPreview.style.filter = `${FilterSettings[currentFilter]['FUNCTION']}(${valueElement.value}${FilterSettings[currentFilter]['UNIT']})`;
+  });
+}
+
+
+export function resetCurrentFilter() {
+  currentFilter = 'none';
+  imgPreview.style = '';
+  imgEffectLevel.hidden = true;
+
+  resetSlider();
+}
+
+
+function resetSlider() {
+  slider.noUiSlider.updateOptions(defaultSliderOptions);
+}
+
+
+function updateFilter(evt) {
   if (evt.target.nodeName === 'INPUT') {
     currentFilter = evt.target.value;
 
@@ -78,21 +101,19 @@ filters.addEventListener('click', (evt) => {
 
       slider.noUiSlider.updateOptions({
         range: {
-          min: filterSettings[currentFilter]['min'],
-          max: filterSettings[currentFilter]['max'],
+          min: FilterSettings[currentFilter]['MIN'],
+          max: FilterSettings[currentFilter]['MAX'],
         },
-        start: filterSettings[currentFilter]['start'],
-        step: filterSettings[currentFilter]['step']
+        start: FilterSettings[currentFilter]['START'],
+        step: FilterSettings[currentFilter]['STEP']
       });
 
-      slider.value = filterSettings[currentFilter]['max'];
-      valueElement.value = filterSettings[currentFilter]['max'];
+      slider.value = FilterSettings[currentFilter]['MAX'];
+      valueElement.value = FilterSettings[currentFilter]['MAX'];
     }
   }
-});
+}
 
-
-slider.noUiSlider.on('update', () => {
-  valueElement.value = slider.noUiSlider.get();
-  imgPreview.style.filter = `${filterSettings[currentFilter]['function']}(${valueElement.value}${filterSettings[currentFilter]['unit']})`;
-});
+imgEffectLevel.hidden = true;
+initSlider();
+resetCurrentFilter();

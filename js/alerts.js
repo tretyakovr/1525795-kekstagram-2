@@ -1,7 +1,6 @@
 const ALERT_SHOW_TIME = 5000;
 const errorTemplate = document.querySelector('#data-error').content;
 const successTemplate = document.querySelector('#success').content;
-const successDiv = document.createElement('div');
 
 export const showErrMessage = () => {
   const errDiv = document.createElement('div');
@@ -15,10 +14,32 @@ export const showErrMessage = () => {
 
 
 export const showSuccessMessage = () => {
-  successDiv.appendChild(successTemplate);
-  document.body.appendChild(successDiv);
+  document.body.appendChild(successTemplate.cloneNode(true));
 
-  setTimeout(() => {
-    successDiv.remove();
-  }, ALERT_SHOW_TIME);
+  document.addEventListener('keydown', closeSuccessAlertByEsc);
+  document.addEventListener('click', closeSuccessAlertByClick);
+
+  document.querySelector('.success__title').textContent = 'Изображение успешно отправлено!';
 };
+
+
+function closeSuccessAlertByEsc(evt) {
+  if (evt.key === 'Escape') {
+    evt.preventDefault();
+    closeSuccessAlert();
+  }
+}
+
+
+function closeSuccessAlertByClick(evt) {
+  if (evt.target === document.querySelector('.success') || evt.target === document.querySelector('.success__button')) {
+    evt.preventDefault();
+    closeSuccessAlert();
+  }
+}
+
+function closeSuccessAlert() {
+  document.removeEventListener('keydown', closeSuccessAlertByEsc);
+  document.removeEventListener('click', closeSuccessAlertByClick);
+  document.querySelector('.success').remove();
+}

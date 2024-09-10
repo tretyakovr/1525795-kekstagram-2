@@ -2,7 +2,7 @@ import { getArrayPages } from './pagination.js';
 import { getPageCount } from './pagination.js';
 import { getPageItems } from './pagination.js';
 import { getPageLength } from './pagination.js';
-import { loadedPhotos } from './exchange.js';
+import { getLoadedPhotos } from './photos-state.js';
 
 const COMMENTS_BY_PAGE = 5;
 const modalView = document.querySelector('.big-picture');
@@ -94,12 +94,12 @@ function photoModalViewHandler(evt) {
     modalView.classList.remove('hidden');
 
     // Добавляем события на закрытие модального окна
-    document.addEventListener('keydown', checkEscKey);
+    document.addEventListener('keydown', closeViewPhotoByEsc);
     closeButton.addEventListener('click', closeModalViewHandler);
 
     // Получаем photo из preview и заполняем свойства полноразмерного изображения
     clearComments();
-    const photoItem = loadedPhotos[evt.target.parentNode.dataset.id];
+    const photoItem = getLoadedPhotos()[evt.target.parentNode.dataset.id];
     comments = photoItem.comments;
     commentsByPage = getArrayPages(comments, COMMENTS_BY_PAGE);
 
@@ -116,7 +116,7 @@ function photoModalViewHandler(evt) {
 }
 
 
-function checkEscKey(evt) {
+function closeViewPhotoByEsc(evt) {
   if (evt.key === 'Escape') {
     evt.preventDefault();
     closeModalViewHandler();
@@ -127,6 +127,6 @@ function checkEscKey(evt) {
 function closeModalViewHandler() {
   modalView.classList.add('hidden');
   document.body.classList.remove('modal-open');
-  modalView.removeEventListener('keydown', checkEscKey);
+  modalView.removeEventListener('keydown', closeViewPhotoByEsc);
   closeButton.removeEventListener('click', closeModalViewHandler);
 }
