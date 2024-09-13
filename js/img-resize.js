@@ -18,6 +18,12 @@ export const previewScaleUp = () => {
 };
 
 
+export const resetSizePreview = () => {
+  currentSize = 100;
+  changePreview();
+};
+
+
 function changePreview() {
   sizeValue.value = `${currentSize}%`;
   imgPreview.style.transform = `scale(${currentSize / 100})`;

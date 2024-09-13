@@ -1,10 +1,12 @@
 const ALERT_SHOW_TIME = 5000;
-const errorTemplate = document.querySelector('#data-error').content;
+const loadErrorTemplate = document.querySelector('#data-error').content;
+const sendErrorTemplate = document.querySelector('#error').content;
 const successTemplate = document.querySelector('#success').content;
 
-export const showErrMessage = () => {
+
+export const showLoadErrMessage = () => {
   const errDiv = document.createElement('div');
-  errDiv.appendChild(errorTemplate);
+  errDiv.appendChild(loadErrorTemplate);
   document.body.appendChild(errDiv);
 
   setTimeout(() => {
@@ -13,13 +15,19 @@ export const showErrMessage = () => {
 };
 
 
+export const showSendErrMessage = () => {
+  document.body.appendChild(sendErrorTemplate.cloneNode(true));
+
+  document.addEventListener('keydown', closeErrorAlertByEsc);
+  document.addEventListener('click', closeErrorAlertByClick);
+};
+
+
 export const showSuccessMessage = () => {
   document.body.appendChild(successTemplate.cloneNode(true));
 
   document.addEventListener('keydown', closeSuccessAlertByEsc);
   document.addEventListener('click', closeSuccessAlertByClick);
-
-  document.querySelector('.success__title').textContent = 'Изображение успешно отправлено!';
 };
 
 
@@ -38,8 +46,32 @@ function closeSuccessAlertByClick(evt) {
   }
 }
 
+
 function closeSuccessAlert() {
   document.removeEventListener('keydown', closeSuccessAlertByEsc);
   document.removeEventListener('click', closeSuccessAlertByClick);
   document.querySelector('.success').remove();
+}
+
+
+function closeErrorAlertByEsc(evt) {
+  if (evt.key === 'Escape') {
+    evt.preventDefault();
+    closeErrorAlert();
+  }
+}
+
+
+function closeErrorAlertByClick(evt) {
+  if (evt.target === document.querySelector('.error') || evt.target === document.querySelector('.error__button')) {
+    evt.preventDefault();
+    closeErrorAlert();
+  }
+}
+
+
+function closeErrorAlert() {
+  document.removeEventListener('keydown', closeErrorAlertByEsc);
+  document.removeEventListener('click', closeErrorAlertByClick);
+  document.querySelector('.error').remove();
 }

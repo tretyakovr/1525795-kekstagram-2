@@ -3,6 +3,8 @@ const filters = document.querySelector('.effects__list');
 const imgEffectLevel = document.querySelector('.img-upload__effect-level');
 const slider = document.querySelector('.effect-level__slider');
 const valueElement = document.querySelector('.effect-level__value');
+const defaultEffect = document.querySelector('#effect-none');
+
 let currentFilter = 'none';
 const FilterSettings = {
   'none': {
@@ -17,7 +19,7 @@ const FilterSettings = {
     STEP: 0.1,
     START: 1,
     FUNCTION: 'grayscale',
-    UNIT: ''
+    UNIT: '',
   },
   'sepia': {
     MIN: 0,
@@ -25,7 +27,7 @@ const FilterSettings = {
     STEP: 0.1,
     START: 1,
     FUNCTION: 'sepia',
-    UNIT: ''
+    UNIT: '',
   },
   'marvin': {
     MIN: 0,
@@ -33,7 +35,7 @@ const FilterSettings = {
     STEP: 1,
     START: 100,
     FUNCTION: 'invert',
-    UNIT: '%'
+    UNIT: '%',
   },
   'phobos': {
     MIN: 0,
@@ -60,6 +62,17 @@ const defaultSliderOptions = {
   start: FilterSettings[currentFilter]['START'],
   step: FilterSettings[currentFilter]['STEP'],
   connect: 'lower',
+  format: {
+    to: function (value) {
+      if (Number.isInteger(value)) {
+        return value.toFixed(0);
+      }
+      return value.toFixed(1);
+    },
+    from: function (value) {
+      return parseFloat(value);
+    },
+  },
 };
 
 filters.addEventListener('click', updateFilter);
@@ -75,16 +88,12 @@ function initSlider() {
 }
 
 
-export function resetCurrentFilter() {
+export function resetEffectPreview() {
   currentFilter = 'none';
   imgPreview.style = '';
   imgEffectLevel.hidden = true;
+  defaultEffect.checked = true;
 
-  resetSlider();
-}
-
-
-function resetSlider() {
   slider.noUiSlider.updateOptions(defaultSliderOptions);
 }
 
@@ -116,4 +125,4 @@ function updateFilter(evt) {
 
 imgEffectLevel.hidden = true;
 initSlider();
-resetCurrentFilter();
+resetEffectPreview();

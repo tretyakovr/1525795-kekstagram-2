@@ -1,7 +1,8 @@
 import { sendData } from './exchange';
 import { previewScaleDown, previewScaleUp } from './img-resize';
-import { resetCurrentFilter } from './img-filters';
+import { resetEffectPreview } from './img-filters';
 import { validateHashtags, validateComment } from './validation';
+import { resetSizePreview } from './img-resize';
 
 const uploadForm = document.querySelector('.img-upload__form');
 const fileUploadInput = document.querySelector('.img-upload__input');
@@ -10,23 +11,26 @@ const uploadOverlay = document.querySelector('.img-upload__overlay');
 const uploadPreview = document.querySelector('.img-upload__preview img');
 const inputTags = uploadForm.querySelector('.text__hashtags');
 const inputComment = uploadForm.querySelector('.text__description');
-const submitButton = document.querySelector('#upload-submit');
+const submitButton = document.querySelector('.img-upload__submit');
 
 const btnSmaller = document.querySelector('.scale__control--smaller');
 const btnBigger = document.querySelector('.scale__control--bigger');
+
 
 fileUploadInput.addEventListener('change', openUploadForm);
 
 
 function openUploadForm(evt) {
-  document.addEventListener('keydown', closeUploadByEsc);
+  // document.addEventListener('keydown', closeUploadByEsc); //!!! перехватывается!!!
+  uploadForm.addEventListener('keydown', closeUploadByEsc); //!!! перехватывается!!!
   uploadCancelButton.addEventListener('click', closeUploadForm);
   uploadForm.addEventListener('submit', submitUploadForm);
 
   btnSmaller.addEventListener('click', previewScaleDown);
   btnBigger.addEventListener('click', previewScaleUp);
 
-  resetCurrentFilter();
+  resetEffectPreview();
+  resetSizePreview();
   inputTags.value = '';
   inputComment.value = '';
   uploadOverlay.classList.remove('hidden');
@@ -51,6 +55,8 @@ function closeUploadForm() {
   uploadOverlay.classList.add('hidden');
   document.body.classList.remove('modal-open');
   fileUploadInput.value = '';
+  resetSizePreview();
+  resetEffectPreview();
 }
 
 
