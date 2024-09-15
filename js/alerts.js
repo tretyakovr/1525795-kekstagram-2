@@ -4,9 +4,10 @@ const sendErrorTemplate = document.querySelector('#error').content;
 const successTemplate = document.querySelector('#success').content;
 
 
+// Используется только при загрузке миниатюр
 export const showLoadErrMessage = () => {
   const errDiv = document.createElement('div');
-  errDiv.appendChild(loadErrorTemplate);
+  errDiv.appendChild(loadErrorTemplate.cloneNode(true));
   document.body.appendChild(errDiv);
 
   setTimeout(() => {
@@ -15,63 +16,46 @@ export const showLoadErrMessage = () => {
 };
 
 
+// Используется при отправке изображения
 export const showSendErrMessage = () => {
-  document.body.appendChild(sendErrorTemplate.cloneNode(true));
-
-  document.addEventListener('keydown', closeErrorAlertByEsc);
-  document.addEventListener('click', closeErrorAlertByClick);
+  showMessage(sendErrorTemplate, '.error');
 };
 
 
+// Используется при отправке изображения
 export const showSuccessMessage = () => {
-  document.body.appendChild(successTemplate.cloneNode(true));
-
-  document.addEventListener('keydown', closeSuccessAlertByEsc);
-  document.addEventListener('click', closeSuccessAlertByClick);
+  showMessage(successTemplate, '.success');
 };
 
 
-function closeSuccessAlertByEsc(evt) {
+function showMessage(messageTemplate, messageClass) {
+  document.body.appendChild(messageTemplate.cloneNode(true));
+  const message = document.querySelector(messageClass);
+  message.classList.add('alert');
+
+  document.addEventListener('keydown', messageEscHandler);
+  document.addEventListener('click', messageClickHandler);
+}
+
+
+function messageEscHandler(evt) {
   if (evt.key === 'Escape') {
     evt.preventDefault();
-    closeSuccessAlert();
+    closeAlert();
   }
 }
 
 
-function closeSuccessAlertByClick(evt) {
-  if (evt.target === document.querySelector('.success') || evt.target === document.querySelector('.success__button')) {
+function messageClickHandler(evt) {
+  if (['success', 'success__button', 'error', 'error__button'].some((item) => evt.target.classList.contains(item))) {
     evt.preventDefault();
-    closeSuccessAlert();
+    closeAlert();
   }
 }
 
 
-function closeSuccessAlert() {
-  document.removeEventListener('keydown', closeSuccessAlertByEsc);
-  document.removeEventListener('click', closeSuccessAlertByClick);
-  document.querySelector('.success').remove();
-}
-
-
-function closeErrorAlertByEsc(evt) {
-  if (evt.key === 'Escape') {
-    evt.preventDefault();
-    closeErrorAlert();
-  }
-}
-
-
-function closeErrorAlertByClick(evt) {
-  if (evt.target === document.querySelector('.error') || evt.target === document.querySelector('.error__button')) {
-    evt.preventDefault();
-    closeErrorAlert();
-  }
-}
-
-
-function closeErrorAlert() {
-  document.removeEventListener('keydown', closeErrorAlertByEsc);
-  document.removeEventListener('click', closeErrorAlertByClick);
-  document.querySelector('.error').remove();
+function closeAlert() {
+  document.removeEventListener('keydown', messageEscHandler);
+  document.removeEventListener('click', messageClickHandler);
+  document.querySelector('.alert').remove();
 }
