@@ -51,7 +51,7 @@ export function validateHashtags() {
 export function validateComment() {
   clearError(inputComment);
   if (inputComment.value.length > 140) {
-    const errText = 'Длина комментария не может быть больше 140 символов!'
+    const errText = 'Длина комментария не может быть больше 140 символов!';
     displayError(inputComment, errText);
 
     return false;
